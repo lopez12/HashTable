@@ -1,5 +1,68 @@
-Proyecto de tablas Hash con arboles
+Proyecto 1
 
+Diseñe y codifique una aplicación o programa directorio para almacenar los nombres, dirección y
+
+teléfono de sus contactos, amigos y familiares.
+
+Cada registro debe tener como mínimo los siguientes campos:
+
+- Nombre(s): Una cadena de 1 y hasta 32 caracteres.
+
+- Apellido(s): Una cadena de 1 y hasta 32 caracteres.
+
+- Dirección: Una cadena de 1 y hasta 64 caracteres.
+
+- Teléfono1: Una cadena de 12 dígitos.
+
+- Teléfono2: Una cadena de 12 dígitos.
+
+Se pueden agregar más campos si así lo considera necesario.
+
+Las operaciones básicas sobre el directorio son las siguientes:
+
+- Altas: Consiste en la inserción de un nuevo registro.
+
+- Bajas: Consiste en la eliminación de un registro ya existente.
+
+- Cambios: Consiste en la modificación de los campos de Dirección y/o Teléfonos de un
+
+registro ya existente.
+
+- Despliegue: Consiste en la búsqueda y despliegue en pantalla de la información de un
+
+registro ya existente o que indique que el registro es inexistente.
+
+Restricciones de Implementación:
+
+Para cumplir con los objetivos de aprendizaje de la materia tome en cuenta las siguientes
+
+consideraciones:
+
+ Se debe implementar una tabla hash para accesar los elementos del directorio.
+
+ Se debe diseñar o seleccionar una función para obtener los valores hash de cada
+
+registro.
+
+ Las colisiones se deben manejar implementando un algoritmo de árboles balanceados.
+
+ Se debe seleccionar el algoritmo particular de árboles balanceados. (AVL, 2-3- 4, Red-
+
+Black).
+
+ Se entregará un reporte que documente los puntos anteriores incluyendo la manera
+
+de ejecutar el programa y el resultado de una corrida de ejemplo para ilustrar las
+
+operaciones del programa. El reporte también debe incluir el análisis de complejidad
+
+para las operaciones de inserción, eliminación y búsqueda del algoritmo utilizado.
+
+ Además se realizará una breve presentación de 5 a 10 minutos para mostrar el
+
+programa en ejecución.
+
+Fecha límite de entrega y presentación: Sábado 29 de octubre, 2016 en la hora de clase.
 
 -Proyecto desarrollado en java
 
