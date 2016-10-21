@@ -21,16 +21,21 @@ public class HashTable {
         Hashtable<String,String> paises = new Hashtable<String,String>();
         Agregar(paises,"ES", "España");
         Agregar(paises,"US", "Estados Unidos");	
+        paises.remove("ES");
         System.out.println("El valor de la clave " + "US" + " es " + Buscar(paises,"US"));
+        System.out.println("El valor de la clave " + "ES" + " es " + Buscar(paises,"ES"));
         // TODO code application logic here
     }
     
-    public static void Agregar(Hashtable table,String a, String b) {
-        table.put(a, b);
+    public static void Agregar(Hashtable table,String ID, String Contenido) {
+        table.put(ID, Contenido);
     }
     
-    public static String Buscar(Hashtable table,String ToFind) {
-        return (String)table.get(ToFind);
+    public static String Buscar(Hashtable table,String IDToFind) {
+        return (String)table.get(IDToFind);
     }
     
+    public static void Remover(Hashtable table,String IDToRemove) {
+        table.remove(IDToRemove);
+    }
 }
