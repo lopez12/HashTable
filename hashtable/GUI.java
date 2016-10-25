@@ -119,11 +119,20 @@ public class GUI extends Application{
 	public void agregarManejadores(){
 		btnAgregar.setOnAction(e -> {
 			//TODO Implementar algoritmo para agregar
-			System.out.println("Agregando...");
+			Persona p = new Persona(tfNombre.getText(),tfApellidos.getText(),tfDireccion.getText(),
+					tfTelefono1.getText(),tfTelefono2.getText());
+			//TODO change key
+			HashTable.agregar("key1", p);
 		});
 		btnBuscar.setOnAction(e -> {
 			//TODO Implementar algoritmo de busqueda
 			System.out.println("Buscando...");
+			Persona p = new Persona();
+			p.setNombre(tfNombre.getText());
+			p.setApellido(tfApellidos.getText());
+			Persona persona = HashTable.buscar("key1", p);
+			System.out.println(persona.getNombre() + " " + persona.getApellido() + 
+					" encontrado! " + persona.getDireccion());
 		});
 		btnModificar.setOnAction(e -> {
 			//TODO Implementar algoritmo de modificacion

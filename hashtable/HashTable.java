@@ -29,6 +29,9 @@ import java.util.Map;
  * @author Arturo
  */
 public class HashTable {
+	
+	public static Map<String,List<Persona>> mapaPersonas = 
+			new HashMap<String, List<Persona>>();
 
     /**
      * @param args the command line arguments
@@ -36,7 +39,7 @@ public class HashTable {
     
     public static void main(String[] args) {
         
-        //Creacion de la Tabla Hash
+        /*//Creacion de la Tabla Hash
         Map<String, List<String>> mapOfList = new HashMap<String, List<String>>();
         
         //Aggregar entradas a las tablas
@@ -61,15 +64,32 @@ public class HashTable {
         //Para acceder a elementos por separado se debe de usar un indexCode
         System.out.println(mapOfList.get("key1").get(0));
 
-        // TODO code application logic here
+        // TODO code application logic here*/
     }
     
-    public static void Agregar(Map Mapa,String ID,String Nombre, String Apellido, String Direccion, String Telefono1,String Telefono2) {
-        Mapa.put(ID, Arrays.asList(Nombre,Apellido,Direccion,Telefono1,Telefono2));
+    public static void agregar(String id,Persona p) {
+    	List<Persona> listaPersonas = null;
+    	if(mapaPersonas.get(id) == null){
+    		listaPersonas = new ArrayList<Persona>();
+    		mapaPersonas.put(id, listaPersonas);
+    	}else{
+    		listaPersonas = mapaPersonas.get(id);
+    	}
+    	listaPersonas.add(p);
+    	System.out.println(p.getNombre() + " " + p.getApellido() + " agregado");
     }
     
-    public static Object Buscar(Map Mapa,String IDToFind) {
-        return Mapa.get(IDToFind);
+    public static Persona buscar(String id, Persona p) {
+        if(mapaPersonas.get(id) != null){
+        	for(Persona persona: mapaPersonas.get(id)){
+        		if(p.equals(persona)){
+        			return persona;
+        		}
+        	}
+        	return null;
+        }else{
+        	return null;
+        }
     }
     
     public static void Remover(Map Mapa,String IDToRemove) {
