@@ -86,10 +86,8 @@ public class HashTable {
         			return persona;
         		}
         	}
-        	return null;
-        }else{
-        	return null;
         }
+        return null;
     }
     
     public static void Remover(Map Mapa,String IDToRemove) {
