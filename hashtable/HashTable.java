@@ -93,4 +93,14 @@ public class HashTable {
     public static void Remover(Map Mapa,String IDToRemove) {
         Mapa.remove(IDToRemove);
     }
+    
+    public static String generarHash(String nombreCompleto){
+    	char[] array = nombreCompleto.toCharArray();
+    	int sum = 0;
+    	for(int i=0; i < array.length; i++){
+    		sum += array[i];
+    	}
+    	sum *= 31;
+    	return String.valueOf(sum);
+    }
 }

@@ -122,7 +122,8 @@ public class GUI extends Application{
 			Persona p = new Persona(tfNombre.getText(),tfApellidos.getText(),tfDireccion.getText(),
 					tfTelefono1.getText(),tfTelefono2.getText());
 			//TODO change key
-			HashTable.agregar("key1", p);
+			String key = HashTable.generarHash(tfNombre.getText() +  tfApellidos.getText());
+			HashTable.agregar(key, p);
 		});
 		btnBuscar.setOnAction(e -> {
 			//TODO Implementar algoritmo de busqueda
@@ -130,7 +131,11 @@ public class GUI extends Application{
 			Persona p = new Persona();
 			p.setNombre(tfNombre.getText());
 			p.setApellido(tfApellidos.getText());
-			Persona persona = HashTable.buscar("key1", p);
+			p.setDireccion(tfDireccion.getText());
+			p.setTelefono1(tfTelefono1.getText());
+			p.setTelefono2(tfTelefono2.getText());
+			String key = HashTable.generarHash(tfNombre.getText() +  tfApellidos.getText());
+			Persona persona = HashTable.buscar(key, p);
 			System.out.println(persona.getNombre() + " " + persona.getApellido() + 
 					" encontrado! " + persona.getDireccion());
 		});

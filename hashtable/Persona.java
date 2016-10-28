@@ -54,8 +54,11 @@ public class Persona {
 	    if (otro == this) return true;
 	    if (!(otro instanceof Persona))return false;
 	    Persona otraPersona = (Persona)otro;
-	    if(nombre.equals(otraPersona.getNombre()) 
-	    		&& apellido.equals(otraPersona.getApellido())){
+	    if(nombre.equalsIgnoreCase(otraPersona.getNombre()) 
+	    		&& apellido.equalsIgnoreCase(otraPersona.getApellido())
+	    		&& direccion.equalsIgnoreCase(otraPersona.getDireccion())
+	    		&& telefono1.equalsIgnoreCase(otraPersona.getTelefono1())
+	    		&& telefono2.equalsIgnoreCase(otraPersona.getTelefono2())){
 	    	return true;
 	    }
 	    return false;
