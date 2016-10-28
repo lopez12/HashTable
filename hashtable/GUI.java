@@ -25,6 +25,7 @@ public class GUI extends Application{
 	private TextField tfTelefono2;
 	private StackPane layout;
 	private GridPane pane;
+	private Persona encontrada;
 	
 	public static void main(String...args){
 		launch(args);
@@ -58,7 +59,7 @@ public class GUI extends Application{
 		btnModificar.setText("Modificar");
 		btnModificar.setPrefSize(80, 20);
 		btnLimpiar = new Button();
-		btnLimpiar.setText("Limpiar");
+		btnLimpiar.setText("Reset");
 		btnLimpiar.setPrefSize(80, 20);
 	}
 	
@@ -108,11 +109,13 @@ public class GUI extends Application{
 		GridPane.setConstraints(btnBuscar, 1, 1);
 		pane.getChildren().add(btnBuscar);
 		
-		GridPane.setConstraints(btnModificar, 1, 2);
+		GridPane.setConstraints(btnModificar, 1, 3);
 		pane.getChildren().add(btnModificar);
+		btnModificar.setVisible(false);
 		
-		GridPane.setConstraints(btnEliminar, 1, 3);
+		GridPane.setConstraints(btnEliminar, 1, 2);
 		pane.getChildren().add(btnEliminar);
+		btnEliminar.setVisible(false);
 		
 		GridPane.setConstraints(btnLimpiar, 1, 4);
 		pane.getChildren().add(btnLimpiar);		
@@ -120,7 +123,12 @@ public class GUI extends Application{
 	
 	public void agregarManejadores(){
 		btnAgregar.setOnAction(e -> {
-			//TODO Implementar algoritmo para agregar
+			if(tfNombre.getText().isEmpty() || tfApellidos.getText().isEmpty() || tfDireccion.getText().isEmpty() ||
+					tfTelefono1.getText().isEmpty() || tfTelefono2.getText().isEmpty()){
+				mostrarAlerta(Alert.AlertType.WARNING, StageStyle.UTILITY, "Warning", "Llenar todos los campos!", 
+						"Todos los campos son obligatorios!");
+				return;
+			}
 			Persona p = new Persona(tfNombre.getText(),tfApellidos.getText(),tfDireccion.getText(),
 					tfTelefono1.getText(),tfTelefono2.getText());
 			//TODO change key
@@ -128,16 +136,17 @@ public class GUI extends Application{
 			HashTable.agregar(key, p);
 			mostrarAlerta(Alert.AlertType.INFORMATION, StageStyle.UTILITY, "Info", 
 					"Agregado!", tfNombre.getText() + " " + tfApellidos.getText() + " es parte del directorio!");
+			limpiar();
+			
 		});
 		btnBuscar.setOnAction(e -> {
-			//TODO Implementar algoritmo de busqueda
-			System.out.println("Buscando...");
-			Persona p = new Persona();
-			p.setNombre(tfNombre.getText());
-			p.setApellido(tfApellidos.getText());
-			p.setDireccion(tfDireccion.getText());
-			p.setTelefono1(tfTelefono1.getText());
-			p.setTelefono2(tfTelefono2.getText());
+			if(tfNombre.getText().isEmpty() || tfApellidos.getText().isEmpty() || tfDireccion.getText().isEmpty() ||
+					tfTelefono1.getText().isEmpty() || tfTelefono2.getText().isEmpty()){
+				mostrarAlerta(Alert.AlertType.WARNING, StageStyle.UTILITY, "Warning", "Llenar todos los campos!", 
+						"Todos los campos son obligatorios!");
+				return;
+			}
+			Persona p = crearPersona();
 			String key = HashTable.generarHash(tfNombre.getText() +  tfApellidos.getText());
 			Persona persona = HashTable.buscar(key, p);
 			if(persona == null){
@@ -147,35 +156,41 @@ public class GUI extends Application{
 				mostrarAlerta(Alert.AlertType.INFORMATION, StageStyle.UTILITY, "Info", tfNombre.getText() + " " 
 						+ tfApellidos.getText(),"Direccion: " + tfDireccion.getText() + "\n" + "Telefono 1: " + 
 						tfTelefono1.getText() + "\n" + "Telefono 2: " + tfTelefono2.getText());
+				btnModificar.setVisible(true);
+				btnEliminar.setVisible(true);
+				this.encontrada = persona;
+				tfNombre.setEditable(false);
+				tfApellidos.setEditable(false);
 			}
 		});
 		btnModificar.setOnAction(e -> {
-			//TODO Implementar algoritmo de modificacion
-			System.out.println("Modificando...");
+			Persona p = crearPersona();
+			String key = HashTable.generarHash(tfNombre.getText() +  tfApellidos.getText());
+			boolean modificada = HashTable.modificar(key, this.encontrada, p);
+			if(modificada){
+				mostrarAlerta(Alert.AlertType.INFORMATION, StageStyle.UTILITY, "Info", "Registro actualizado!",
+						"Direccion: " + tfDireccion.getText() + "\n" + "Telefono 1: " + 
+						tfTelefono1.getText() + "\n" + "Telefono 2: " + tfTelefono2.getText());
+			}else{
+				mostrarAlerta(Alert.AlertType.WARNING, StageStyle.UTILITY, "Warning", "No fue posible actualizar!", 
+						tfNombre.getText() + " " + tfApellidos.getText() + " no es parte del directorio!");
+			}
 		});
 		btnEliminar.setOnAction(e -> {
-			Persona p = new Persona();
-			p.setNombre(tfNombre.getText());
-			p.setApellido(tfApellidos.getText());
-			p.setDireccion(tfDireccion.getText());
-			p.setTelefono1(tfTelefono1.getText());
-			p.setTelefono2(tfTelefono2.getText());
+			Persona p = crearPersona();
 			String key = HashTable.generarHash(tfNombre.getText() +  tfApellidos.getText());
-			boolean removido = HashTable.remover(key, p);
-			if(removido){
+			boolean removida = HashTable.remover(key, p);
+			if(removida){
 				mostrarAlerta(Alert.AlertType.INFORMATION, StageStyle.UTILITY, "Info", "Eliminado!",
 						tfNombre.getText() + " " + tfApellidos.getText() + " ya no es parte del directorio!");
+				limpiar();
 			}else{
 				mostrarAlerta(Alert.AlertType.WARNING, StageStyle.UTILITY, "Warning", "No fue posible eliminar!", 
 						tfNombre.getText() + " " + tfApellidos.getText() + " no es parte del directorio!");
 			}
 		});
 		btnLimpiar.setOnAction(e -> {
-			tfNombre.setText("");
-			tfApellidos.setText("");
-			tfTelefono1.setText("");
-			tfTelefono2.setText("");
-			tfDireccion.setText("");
+			limpiar();
 		});
 		
 	}
@@ -188,6 +203,28 @@ public class GUI extends Application{
 		alert.setContentText(content);
 		
 		alert.showAndWait();
+	}
+	
+	public void limpiar(){
+		tfNombre.setText("");
+		tfApellidos.setText("");
+		tfTelefono1.setText("");
+		tfTelefono2.setText("");
+		tfDireccion.setText("");
+		btnModificar.setVisible(false);
+		btnEliminar.setVisible(false);
+		tfNombre.setEditable(true);
+		tfApellidos.setEditable(true);
+	}
+	
+	public Persona crearPersona(){
+		Persona p = new Persona();
+		p.setNombre(tfNombre.getText());
+		p.setApellido(tfApellidos.getText());
+		p.setDireccion(tfDireccion.getText());
+		p.setTelefono1(tfTelefono1.getText());
+		p.setTelefono2(tfTelefono2.getText());
+		return p;
 	}
 	
 

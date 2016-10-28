@@ -54,14 +54,23 @@ public class HashTable {
     }
     
     public static boolean remover(String id, Persona p) {
-    	if(mapaPersonas.get(id) != null){
-        	for(Persona persona: mapaPersonas.get(id)){
-        		if(p.equals(persona)){
-        			mapaPersonas.get(id).remove(p);
-        			return true;
-        		}
-        	}
+    	Persona encontrada = buscar(id,p);
+    	if(p != null){
+        	mapaPersonas.get(id).remove(encontrada);
+        	return true;
         }
+    	return false;
+    }
+    
+    public static boolean modificar(String id, Persona anterior, Persona nueva){
+    	int index = mapaPersonas.get(id).indexOf(anterior);
+    	if(index != -1){
+    		Persona p = mapaPersonas.get(id).get(index);
+    		p.setDireccion(nueva.getDireccion());
+    		p.setTelefono1(nueva.getTelefono1());
+    		p.setTelefono2(nueva.getTelefono2());
+    		return true;
+    	}
     	return false;
     }
     
