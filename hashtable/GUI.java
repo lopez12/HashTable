@@ -3,11 +3,13 @@ package hashtable;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class GUI extends Application{
 	
@@ -112,7 +114,7 @@ public class GUI extends Application{
 		GridPane.setConstraints(btnEliminar, 1, 3);
 		pane.getChildren().add(btnEliminar);
 		
-		GridPane.setConstraints(btnLimpiar, 1, 3);
+		GridPane.setConstraints(btnLimpiar, 1, 4);
 		pane.getChildren().add(btnLimpiar);		
 	}
 	
@@ -124,6 +126,8 @@ public class GUI extends Application{
 			//TODO change key
 			String key = HashTable.generarHash(tfNombre.getText() +  tfApellidos.getText());
 			HashTable.agregar(key, p);
+			mostrarAlerta(Alert.AlertType.INFORMATION, StageStyle.UTILITY, "Info", 
+					"Agregado!", tfNombre.getText() + " " + tfApellidos.getText() + " es parte del directorio!");
 		});
 		btnBuscar.setOnAction(e -> {
 			//TODO Implementar algoritmo de busqueda
@@ -136,16 +140,35 @@ public class GUI extends Application{
 			p.setTelefono2(tfTelefono2.getText());
 			String key = HashTable.generarHash(tfNombre.getText() +  tfApellidos.getText());
 			Persona persona = HashTable.buscar(key, p);
-			System.out.println(persona.getNombre() + " " + persona.getApellido() + 
-					" encontrado! " + persona.getDireccion());
+			if(persona == null){
+				mostrarAlerta(Alert.AlertType.WARNING, StageStyle.UTILITY, "Warning", "No encontrado!", 
+						tfNombre.getText() + " " + tfApellidos.getText() + " no es parte del directorio!");
+			}else{
+				mostrarAlerta(Alert.AlertType.INFORMATION, StageStyle.UTILITY, "Info", tfNombre.getText() + " " 
+						+ tfApellidos.getText(),"Direccion: " + tfDireccion.getText() + "\n" + "Telefono 1: " + 
+						tfTelefono1.getText() + "\n" + "Telefono 2: " + tfTelefono2.getText());
+			}
 		});
 		btnModificar.setOnAction(e -> {
 			//TODO Implementar algoritmo de modificacion
 			System.out.println("Modificando...");
 		});
 		btnEliminar.setOnAction(e -> {
-			//TODO Implementar algoritmo de modificacion
-			System.out.println("Eliminando...");
+			Persona p = new Persona();
+			p.setNombre(tfNombre.getText());
+			p.setApellido(tfApellidos.getText());
+			p.setDireccion(tfDireccion.getText());
+			p.setTelefono1(tfTelefono1.getText());
+			p.setTelefono2(tfTelefono2.getText());
+			String key = HashTable.generarHash(tfNombre.getText() +  tfApellidos.getText());
+			boolean removido = HashTable.remover(key, p);
+			if(removido){
+				mostrarAlerta(Alert.AlertType.INFORMATION, StageStyle.UTILITY, "Info", "Eliminado!",
+						tfNombre.getText() + " " + tfApellidos.getText() + " ya no es parte del directorio!");
+			}else{
+				mostrarAlerta(Alert.AlertType.WARNING, StageStyle.UTILITY, "Warning", "No fue posible eliminar!", 
+						tfNombre.getText() + " " + tfApellidos.getText() + " no es parte del directorio!");
+			}
 		});
 		btnLimpiar.setOnAction(e -> {
 			tfNombre.setText("");
@@ -155,6 +178,16 @@ public class GUI extends Application{
 			tfDireccion.setText("");
 		});
 		
+	}
+	
+	public void mostrarAlerta(Alert.AlertType type, StageStyle style, String title, String header, String content){
+		Alert alert = new Alert(type);
+		alert.initStyle(style);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		
+		alert.showAndWait();
 	}
 	
 

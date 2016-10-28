@@ -9,8 +9,6 @@
 
 package hashtable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Hashtable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,40 +30,6 @@ public class HashTable {
 	
 	public static Map<String,List<Persona>> mapaPersonas = 
 			new HashMap<String, List<Persona>>();
-
-    /**
-     * @param args the command line arguments
-     */
-    
-    public static void main(String[] args) {
-        
-        /*//Creacion de la Tabla Hash
-        Map<String, List<String>> mapOfList = new HashMap<String, List<String>>();
-        
-        //Aggregar entradas a las tablas
-        Agregar(mapOfList,"key1","Arturo", "Lopez", "Nacciones Unidas", "3317074142","40008678");
-        Agregar(mapOfList,"key2","Juan", "Robles", "Avenida Patria", "3317079215","31350150");
-        
-        //Retorno de Objectos en base a las busquedas de ID
-        Object Propiedad = Buscar(mapOfList,"key1");
-        Object Propuedad2 = Buscar(mapOfList,"key2");
-        
-        //Impresion de resultados 
-        System.out.println(Propiedad);
-        System.out.println(Propuedad2);
-        
-        //Remover un objeto de la tabla en base a su ID
-        Remover(mapOfList,"key2");
-        Propuedad2 = Buscar(mapOfList,"key2");
-        
-        //Verificar que no se encontro ID
-        System.out.println(Propuedad2);
-        
-        //Para acceder a elementos por separado se debe de usar un indexCode
-        System.out.println(mapOfList.get("key1").get(0));
-
-        // TODO code application logic here*/
-    }
     
     public static void agregar(String id,Persona p) {
     	List<Persona> listaPersonas = null;
@@ -76,7 +40,6 @@ public class HashTable {
     		listaPersonas = mapaPersonas.get(id);
     	}
     	listaPersonas.add(p);
-    	System.out.println(p.getNombre() + " " + p.getApellido() + " agregado");
     }
     
     public static Persona buscar(String id, Persona p) {
@@ -90,8 +53,16 @@ public class HashTable {
         return null;
     }
     
-    public static void Remover(Map Mapa,String IDToRemove) {
-        Mapa.remove(IDToRemove);
+    public static boolean remover(String id, Persona p) {
+    	if(mapaPersonas.get(id) != null){
+        	for(Persona persona: mapaPersonas.get(id)){
+        		if(p.equals(persona)){
+        			mapaPersonas.get(id).remove(p);
+        			return true;
+        		}
+        	}
+        }
+    	return false;
     }
     
     public static String generarHash(String nombreCompleto){
