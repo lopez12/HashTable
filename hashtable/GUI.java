@@ -27,8 +27,21 @@ public class GUI extends Application{
 	private GridPane pane;
 	private Persona encontrada;
 	
+	private static Persona[] setPrueba = new Persona[]{
+		new Persona("Trino", "Fajardo", "Copan" ,"3310972410","31332086"),
+		new Persona("Arturo", "Lopez", "Patria", "3317973520","31243086"),
+		new Persona("Jose", "Perez", "Vallarta", "3311230978", "35963028"),
+		new Persona("Gabriela","Martinez","Empresarios","3311973419","30249845"),
+		new Persona("Berenice","Flores","Tikal","3315700283","30249845" )
+	};
+	
 	public static void main(String...args){
+		for(Persona p:setPrueba){
+			String key = HashTable.generarHash(p.getNombre() +  p.getApellido());
+			HashTable.agregar(key, p);
+		}
 		launch(args);
+		
 	}
 
 	@Override
