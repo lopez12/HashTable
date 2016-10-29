@@ -6,12 +6,11 @@
 
 
 
-
 package hashtable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 /**
 *   Note that Multimap is not an exact equivalent of the home-baked solution; 
@@ -28,47 +27,54 @@ import java.util.Map;
  */
 public class HashTable {
 	
-	public static Map<String,List<Persona>> mapaPersonas = 
-			new HashMap<String, List<Persona>>();
+	public static Map<String,TreeMap<String,Persona>> mapaPersonas = 
+			new HashMap<String, TreeMap<String,Persona>>();
     
-    public static void agregar(String id,Persona p) {
-    	List<Persona> listaPersonas = null;
+	public static void agregar(String id,Persona p) {
+    	TreeMap<String,Persona> listaPersonas = null;
+    	String key;
     	if(mapaPersonas.get(id) == null){
-    		listaPersonas = new ArrayList<Persona>();
+    		listaPersonas = new TreeMap<String,Persona>();
     		mapaPersonas.put(id, listaPersonas);
     	}else{
     		listaPersonas = mapaPersonas.get(id);
     	}
-    	listaPersonas.add(p);
+    	key = generarHash(p.getNombre()+p.getApellido());
+    	listaPersonas.put(key, p);
     }
     
     public static Persona buscar(String id, Persona p) {
+    	Map<String, TreeMap<String, Persona>> treeMap = new TreeMap<String, TreeMap<String, Persona>>();
         if(mapaPersonas.get(id) != null){
-        	for(Persona persona: mapaPersonas.get(id)){
-        		if(p.equals(persona)){
-        			return persona;
-        		}
+        	for(Entry<String, Persona> entry : mapaPersonas.get(id).entrySet())
+            {
+		        	if(p.equals(entry.getValue())){
+		        		return (Persona) entry.getValue();
+		        	}
         	}
         }
         return null;
     }
     
     public static boolean remover(String id, Persona p) {
-    	Persona encontrada = buscar(id,p);
-    	if(p != null){
-        	mapaPersonas.get(id).remove(encontrada);
-        	return true;
+        if(mapaPersonas.get(id) != null){
+        	for(Entry<String, Persona> entry : mapaPersonas.get(id).entrySet())
+            {
+		        	if(p.equals(entry.getValue())){
+		        		mapaPersonas.get(id).remove(generarHash(p.getNombre()+p.getApellido()));
+		        		return true;
+		        	}
+        	}
         }
-    	return false;
+        return false;
     }
     
     public static boolean modificar(String id, Persona anterior, Persona nueva){
-    	int index = mapaPersonas.get(id).indexOf(anterior);
-    	if(index != -1){
-    		Persona p = mapaPersonas.get(id).get(index);
-    		p.setDireccion(nueva.getDireccion());
-    		p.setTelefono1(nueva.getTelefono1());
-    		p.setTelefono2(nueva.getTelefono2());
+    	Persona encontrada = buscar(id, anterior);
+    	if(encontrada != null){
+    		encontrada.setDireccion(nueva.getDireccion());
+    		encontrada.setTelefono1(nueva.getTelefono1());
+    		encontrada.setTelefono2(nueva.getTelefono2());
     		return true;
     	}
     	return false;
